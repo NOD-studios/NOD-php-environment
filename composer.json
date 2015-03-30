@@ -26,9 +26,7 @@
         "markwilson/array-key-filter" : "0.*"
     },
     "autoload": {
-        "psr-4": {
-            "Nod\\": "src/"
-        }
+        "psr-4": {"Nod\\": "src/Nod"}
     },
     "license": "MIT"
 }
