@@ -1,0 +1,33 @@
+{
+    "name": "nod-studios/nod-php-environment",
+    "type": "library",
+    "description" : "A php library for detecting and configuring environment through dotenv",
+    "keywords": ["php", "environment", "configuration", "env", "dotenv"],
+    "authors": [
+        {
+            "name"     : "NOD studios",
+            "email"    : "hey@nod.st",
+            "homepage" : "http://nod.st",
+            "role"     : "Company"
+        },
+        {
+            "name"     : "Furkan Tunalı",
+            "email"    : "furkan@nod.st",
+            "homepage" : "http://furkantunali.com",
+            "role"     : "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/NOD-studios/NOD-php-environment/issues"
+    },
+    "require": {
+        "php"                         : ">=5.3.0",
+        "josegonzalez/dotenv"         : "*",
+        "markwilson/array-key-filter" : "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nod\\": "src/"
+        }
+    }
+}
