@@ -1,14 +1,11 @@
 # NOD-php-environment
-
 A php library for detecting and configuring environment with dotenv
-
 
 ##Installation:
 #####With [Composer](https://getcomposer.org):
 ```bash
 composer require nod/environment
 ```
-
 
 ##Usage
 ```php

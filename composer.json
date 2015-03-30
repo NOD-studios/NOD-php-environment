@@ -1,5 +1,5 @@
 {
-    "name": "nod-studios/nod-php-environment",
+    "name": "nod/nod-php-environment",
     "type": "library",
     "description" : "A php library for detecting and configuring environment through dotenv",
     "keywords": ["php", "environment", "configuration", "env", "dotenv"],
