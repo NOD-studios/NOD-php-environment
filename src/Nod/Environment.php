@@ -13,33 +13,33 @@ class Environment
     public $dir;
     public $excludeKey = 'EXCLUDE';
     public $environments = array(
-        'nod' => '.env.nod',
-        'default' => '.env',
+        'nod'         => '.env.nod',
+        'default'     => '.env',
         'development' => '.env.development',
-        'test' => '.env.test',
-        'production' => '.env.production',
-        'local' => '.env.local'
+        'test'        => '.env.test',
+        'production'  => '.env.production',
+        'local'       => '.env.local'
     );
     public $settings = array(
-        'load' => true,
-        'validate' => true,
-        'quiet' => false,
-        'define' => array(
-            'putenv' => true,
-            'env' => false,
-            'server' => false,
+        'load'      => true,
+        'validate'  => true,
+        'quiet'     => false,
+        'overwrite' => true,
+        'define'    => array(
+            'putenv'   => true,
+            'env'      => false,
+            'server'   => false,
             'constant' => false
-        ),
-        'overwrite' => true
+        )
     );
     public $exclude = array();
     protected $validate = array(
-        'nod' => array(),
-        'default' => array(),
+        'nod'         => array(),
+        'default'     => array(),
         'development' => array(),
-        'test' => array(),
-        'production' => array(),
-        'local' => array()
+        'test'        => array(),
+        'production'  => array(),
+        'local'       => array()
     );
     protected $loaded = array();
 
@@ -173,7 +173,7 @@ class Environment
     {
         $quiet = $this->settings['quiet'];
         $quiet = (bool) $this->settings['quiet'];
-        if (!$quiet) {
+        if ($quiet === false) {
             throw new $exception($message);
         }
         return false;
