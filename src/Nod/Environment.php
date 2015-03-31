@@ -94,7 +94,6 @@ class Environment
     /**
      * Returns environment values
      * @param array $loaded Optional loaded environments
-     * @param array $environment variables
      */
     public function getValues(Array $loaded = array())
     {
@@ -113,6 +112,9 @@ class Environment
         return $environment;
     }
 
+    /**
+     * @param string $key
+     */
     public function getVal($key = null)
     {
         if ($key === null) {
@@ -169,6 +171,9 @@ class Environment
         return json_encode($environment, $attribute);
     }
 
+    /**
+     * @param string $message
+     */
     protected function raise($exception, $message)
     {
         $quiet = $this->settings['quiet'];
