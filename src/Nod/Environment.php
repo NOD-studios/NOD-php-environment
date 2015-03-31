@@ -5,40 +5,41 @@ use josegonzalez\Dotenv;
 use MarkWilson\ArrayKeyFilter;
 use MarkWilson\ArrayFiltering\ArrayFiltering;
 use InvalidArgumentException;
+use ReflectionClass;
 
 class Environment
 {
-    //TODO: Imrove documentation
-    public $excludeKey   = 'EXCLUDE';
+    //TODO                               : Imrove documentation
+    public $dir;
+    public $excludeKey = 'EXCLUDE';
     public $environments = array(
-        'nod'         => '.env.nod',
-        'default'     => '.env',
+        'nod' => '.env.nod',
+        'default' => '.env',
         'development' => '.env.development',
-        'test'        => '.env.test',
-        'production'  => '.env.production',
-        'local'       => '.env.local'
+        'test' => '.env.test',
+        'production' => '.env.production',
+        'local' => '.env.local'
     );
-    public $settings     = array(
-        'dir'       => __DIR__,
-        'load'      => true,
-        'validate'  => true,
-        'quiet'     => false,
-        'define'    => array(
-            'putenv'   => true,
-            'env'      => false,
-            'server'   => false,
+    public $settings = array(
+        'load' => true,
+        'validate' => true,
+        'quiet' => false,
+        'define' => array(
+            'putenv' => true,
+            'env' => false,
+            'server' => false,
             'constant' => false
         ),
         'overwrite' => true
     );
-    public $exclude      = array();
-    protected $validate  = array(
-        'nod'         => array(),
-        'default'     => array(),
+    public $exclude = array();
+    protected $validate = array(
+        'nod' => array(),
+        'default' => array(),
         'development' => array(),
-        'test'        => array(),
-        'production'  => array(),
-        'local'       => array()
+        'test' => array(),
+        'production' => array(),
+        'local' => array()
     );
     protected $loaded = array();
 
@@ -48,8 +49,8 @@ class Environment
      */
     public function add($name = 'default')
     {
-        $env  = $this->environments[$name];
-        $path = "{$this->settings['dir']}/{$env}";
+        $env = $this->environments[$name];
+        $path = $this->dir . DIRECTORY_SEPARATOR . $env;
         if (file_exists($path)) {
             return $this->loaded[$name] = (new Dotenv\Loader($env))
                 ->parse();
@@ -59,8 +60,8 @@ class Environment
 
     /**
      * Removes environment from context
-     * @param  string $name Name of the environment
-     * @return array       Current loaded environments
+     * @param string $name Name of the environment
+     * @return array Current loaded environments
      */
     public function remove($name = null)
     {
@@ -81,13 +82,13 @@ class Environment
 
     /**
      * Returns a loaded environment
-     * @param  string $name Name of environment
-     * @return boolean, object     Environment if exists otherwise false
+     * @param string $name Name of environment
+     * @return boolean, object Environment if exists otherwise false
      */
     public function getLoaded($name = 'default')
     {
         return empty($this->loaded[$name]) ?
-            false : $this->loaded[$name];
+            false                        : $this->loaded[$name];
     }
 
     /**
@@ -134,18 +135,18 @@ class Environment
         }
         $environment = $this->getValues();
         return empty($environment[$key]) ?
-            false : $environment[$key];
+            false                        : $environment[$key];
     }
 
     /**
      * Excludes specified variables
-     * @param  array  $environment Optional environment variables
-     * @return array  $environment Environment variables
+     * @param array $environment Optional environment variables
+     * @return array $environment Environment variables
      */
     public function exclude(Array $environment = array())
     {
         $environment = empty($environment) ?
-            $this->getValues() : $environment;
+            $this->getValues()           : $environment;
 
         $excludes = $this->getVal($this->excludeKey);
         $excludes = explode(',', $excludes);
@@ -180,15 +181,15 @@ class Environment
 
     /**
     * Detects and loads available environments
-     * @param  array  $environments Environments to load
-     * @return array                Loaded environments
+     * @param array $environments Environments to load
+     * @return array Loaded environments
      */
     protected function load(Array $environments = array())
     {
         if (empty($environments)) {
             $environments = $this->environments;
         }
-        // TODO: Add optional hostname check to detection
+        // TODO                          : Add optional hostname check to detection
         $loaded = array();
         foreach ($this->environments as $name => $env) {
             if ($this->add($name, $env)) {
@@ -201,8 +202,8 @@ class Environment
 
     /**
      * Defines given or loaded environments
-     * @param  array   $loaded     Loaded environments
-     * @return array   $defined    Defined environments
+     * @param array $loaded Loaded environments
+     * @return array $defined Defined environments
      */
     public function define(Array $loaded = array())
     {
@@ -210,7 +211,7 @@ class Environment
             $loaded = $this->loaded;
         }
         $overwrite = (bool) $this->settings['overwrite'];
-        $defined   = array();
+        $defined = array();
         foreach ($loaded as $environment) {
             if (!$environment instanceof Dotenv\Loader) {
                 continue;
@@ -241,7 +242,7 @@ class Environment
 
     /**
      * Check whether expected variables in environment or not
-     * @param  array  $environments
+     * @param array $environments
      * @return boolean
      */
     public function validate(Array $environments = array())
@@ -255,7 +256,7 @@ class Environment
             if (empty($this->validate[$name])) {
                 continue;
             }
-            $validate    = $this->validate[$name];
+            $validate = $this->validate[$name];
             $environment = $this->getLoaded($name);
             if (!$environment) {
                 continue;
@@ -272,8 +273,10 @@ class Environment
     public function __construct(
         $environments = array(),
         $validate = array(),
-        $settings = array()
+        $settings = array(),
+        $dir = null
     ) {
+        $this->dir = $dir ? $dir : dirname(debug_backtrace()[0]['file']);
         $this->environments = array_merge($this->environments, $environments);
         $this->validate     = array_merge_recursive($this->validate, $validate);
         $this->settings     = array_merge_recursive($this->settings, $settings);
