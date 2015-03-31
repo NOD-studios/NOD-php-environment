@@ -65,7 +65,7 @@ class Environment
      */
     public function remove($name = null)
     {
-        if (!$name) {
+        if ($name === null) {
             return false;
         }
         if (!empty($this->environments[$name])) {
@@ -83,7 +83,7 @@ class Environment
     /**
      * Returns a loaded environment
      * @param string $name Name of environment
-     * @return boolean, object Environment if exists otherwise false
+     * @return bool,object Environment if exists otherwise false
      */
     public function getLoaded($name = 'default')
     {
@@ -94,7 +94,7 @@ class Environment
     /**
      * Returns environment values
      * @param array $loaded Optional loaded environments
-     * @param array $Environment variables
+     * @param array $environment variables
      */
     public function getValues(Array $loaded = array())
     {
@@ -115,7 +115,7 @@ class Environment
 
     public function getVal($key = null)
     {
-        if (!$key) {
+        if ($key === null) {
             return $this->raise(
                 InvalidArgumentException,
                 'Name argument is missing'
@@ -276,7 +276,7 @@ class Environment
         $settings = array(),
         $dir = null
     ) {
-        $this->dir = $dir ? $dir : dirname(debug_backtrace()[0]['file']);
+        $this->dir = $dir !== null ? $dir : dirname(debug_backtrace()[0]['file']);
         $this->environments = array_merge($this->environments, $environments);
         $this->validate     = array_merge_recursive($this->validate, $validate);
         $this->settings     = array_merge_recursive($this->settings, $settings);
