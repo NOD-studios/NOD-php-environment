@@ -52,7 +52,7 @@ class Environment
         $env = $this->environments[$name];
         $path = $this->dir . DIRECTORY_SEPARATOR . $env;
         if (file_exists($path)) {
-            return $this->loaded[$name] = (new Dotenv\Loader($env))
+            return $this->loaded[$name] = (new Dotenv\Loader($path))
                 ->parse();
         }
         return false;
@@ -88,7 +88,7 @@ class Environment
     public function getLoaded($name = 'default')
     {
         return empty($this->loaded[$name]) ?
-            false                        : $this->loaded[$name];
+            false : $this->loaded[$name];
     }
 
     /**
